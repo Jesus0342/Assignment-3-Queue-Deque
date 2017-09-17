@@ -18,7 +18,7 @@
  * and all other necessary functions will also be implemented and tested.
  * ----------------------------------------------------------------------------
  * INPUT:
- *
+ *    There are no inputs.
  *
  * OUTPUT:
  *
