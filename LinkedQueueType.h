@@ -21,7 +21,6 @@ private:
 template <class T>
 LinkedQueueType<T>::LinkedQueueType() : queue()
 {
-
 }
 
 template <class T>
