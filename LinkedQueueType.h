@@ -10,11 +10,25 @@ template <class T>
 class LinkedQueueType
 {
 public:
+	// Default constructor.
 	LinkedQueueType();
+
+	// Returns true if the queue is empty.
 	bool empty();
+
+	// Returns the number of nodes that are in the queue.
 	int size();
+
+	// Returns the data stored in the first node of the queue.
+	// PRE-CONDITION: The queue has at least one node.
 	const T front();
+
+	// Adds a new item to the back of the queue.
+	// POST-CONDITION: The queue is changed.
 	void enqueue(const T item);
+
+	// Removes the item at the front of the queue.
+	// POST-CONDITION: The queue is changed.
 	void dequeue();
 
 private:

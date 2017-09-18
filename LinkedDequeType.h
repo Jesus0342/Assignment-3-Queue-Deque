@@ -23,12 +23,12 @@ public:
 	// PRE-CONDITION: The deque has at least one node.
 	const T front();
 
-	// Adds a new item to the back of the queue.
-	// POST-CONDITION: The queue is changed.
+	// Adds a new item to the back of the deque.
+	// POST-CONDITION: The deque is changed.
 	void insertBack(const T item);
 
-	// Removes the item at the front of the queue.
-	// POST-CONDITION: The queue is changed.
+	// Removes the item at the front of the deque.
+	// POST-CONDITION: The deque is changed.
 	void eraseFront();
 
 private:
