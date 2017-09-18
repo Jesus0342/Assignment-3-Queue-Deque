@@ -3,6 +3,9 @@
 
 #include "LinkedDequeType.h"
 
+// LinkedDequeType - Wrapper class that utilizes the methods of the
+//					 DoublyLinkedList class and LinkedDequeType in order to
+// 					 implement the functions of a deque.
 template <class T>
 class LinkedQueueType
 {

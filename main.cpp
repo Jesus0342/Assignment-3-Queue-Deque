@@ -22,6 +22,7 @@
  *    There are no inputs.
  *
  * OUTPUT:
+ *    stringQueue after each insertion and deletion.
  *
  *****************************************************************************/
 int main()
@@ -77,18 +78,18 @@ int main()
 
 	cout << "***** Part 2 *****\n\n";
 
-	CircularVector<int> test(4);
+	CircularVector<int> test(3);
 
-	for(int i = 0; i < 7; i++)
+	for(int i = 0; i < 5; i++)
 	{
 		test.push_front(i + 1);
 	}
 
 	while(!test.empty())
 	{
-		cout << test.getFront() << endl;
+		cout << test.getBack() << endl;
 
-		test.pop_front();
+		test.pop_back();
 	}
 
 	return 0;

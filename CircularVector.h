@@ -79,7 +79,7 @@ void CircularVector<Type>::resize()
 	Type *copyList = new Type [maxSize * 2];
 	Type *temp = list;
 
-	for(int i = 0; i < size(); i++)
+	for(int i = 0; i < count; i++)
 	{
 		copyList[i] = list[front];
 
@@ -94,6 +94,10 @@ void CircularVector<Type>::resize()
 	list = copyList;
 
 	maxSize *= 2;
+
+	front = maxSize;
+
+	rear = (maxSize / 2) - 1;
 
 	delete temp;
 }
