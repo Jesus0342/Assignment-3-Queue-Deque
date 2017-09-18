@@ -16,6 +16,7 @@ public:
 	int size();
 	void push_back(const Type item);
 	void push_front(const Type item);
+	void insert(int position, const Type item);
 	void pop_front();
 	void pop_back();
 	Type getFront();
@@ -37,7 +38,7 @@ CircularVector<Type>::CircularVector(int vectorSize)
 	if(vectorSize <= 0)
 	{
 		cout << "Size of the vector cannot be negative.\n"
-				<< "Creating a vector of size 100.";
+			 << "Creating a vector of size 100.";
 
 		maxSize = 100;
 	}
@@ -81,11 +82,13 @@ void CircularVector<Type>::resize()
 
 	for(int i = 0; i < count; i++)
 	{
+		cout << "Front = " << front << endl;
+
 		copyList[i] = list[front];
 
 		front++;
 
-		if(front == maxSize)
+		if(front >= maxSize)
 		{
 			front = 0;
 		}
@@ -108,6 +111,7 @@ int CircularVector<Type>::size()
 	return count;
 }
 
+// FIX THIS.
 template <class Type>
 void CircularVector<Type>::push_back(const Type item)
 {
@@ -136,6 +140,56 @@ void CircularVector<Type>::push_front(const Type item)
 	count++;
 
 	list[front] = item;
+}
+
+template <class Type>
+void CircularVector<Type>::insert(int position, const Type item)
+{
+	if(position >= maxSize || position < 0)
+	{
+		cout << "\nInvalid position.\n\n";
+
+		return;
+	}
+
+	if(full())
+	{
+		resize();
+	}
+
+	// Calls the push_front() method if the position entered is 0 or
+	// push_back() if maxSize - 1 is entered.
+	if(position == 0)
+	{
+		push_front(item);
+	}
+	else if(position == maxSize - 1)
+	{
+		push_back(item);
+	}
+	else
+	{
+		count++;
+
+		if(full())
+		{
+			resize();
+		}
+
+		int newRear = rear + 1;
+
+		int insertPos = front + position;
+
+		if(insertPos >= maxSize)
+		{
+			insertPos -= maxSize;
+		}
+
+		rear = newRear;
+
+		cout << "Position entered = " << position << endl
+			 << "Insert position = " << insertPos << endl;
+	}
 }
 
 template <class Type>
@@ -177,6 +231,8 @@ Type CircularVector<Type>::getFront()
 template <class Type>
 Type CircularVector<Type>::getBack()
 {
+//	cout << "rear = " << rear << endl;
+
 	return list[rear];
 }
 
