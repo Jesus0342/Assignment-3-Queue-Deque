@@ -80,10 +80,13 @@ void CircularVector<Type>::resize()
 	Type *copyList = new Type [maxSize * 2];
 	Type *temp = list;
 
+	if(front >= maxSize)
+	{
+		front = 0;
+	}
+
 	for(int i = 0; i < count; i++)
 	{
-		cout << "Front = " << front << endl;
-
 		copyList[i] = list[front];
 
 		front++;
@@ -111,7 +114,6 @@ int CircularVector<Type>::size()
 	return count;
 }
 
-// FIX THIS.
 template <class Type>
 void CircularVector<Type>::push_back(const Type item)
 {
@@ -225,6 +227,11 @@ void CircularVector<Type>::pop_back()
 template <class Type>
 Type CircularVector<Type>::getFront()
 {
+	if(front == maxSize)
+	{
+		front = 0;
+	}
+
 	return list[front];
 }
 
