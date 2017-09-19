@@ -80,28 +80,16 @@ int main()
 
 	CircularVector<int> test(3);
 
-	test.push_back(1);
-	test.push_back(2);
-	test.push_back(3);
-	test.push_back(4);
-	test.push_back(5);
-	test.push_back(6);
-	test.push_back(7);
+	for(int i = 0; i < 7; i++)
+	{
+		test.push_front(i + 1);
+	}
 
-
-//	for(int i = 0; i < 12; i++)
-//	{
-//		test.push_back(i + 1);
-//	}
-//
-//	for(int i = 0; i < 4; i++)
-//	{
-//		test.push_front(i);
-//	}
+	cout << "size " <<  test.size() << endl;
 
 	while(!test.empty())
 	{
-		cout << test.getFront() << endl;
+		cout << test.front() << endl;
 
 		test.pop_front();
 	}

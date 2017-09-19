@@ -19,13 +19,14 @@ public:
 	void insert(int position, const Type item);
 	void pop_front();
 	void pop_back();
-	Type getFront();
-	Type getBack();
+	void erase(int position);
+	Type front();
+	Type back();
 
 private:
 	int maxSize;
 	int count;
-	int front;
+	int head;
 	int rear;
 	Type *list;
 
@@ -47,7 +48,7 @@ CircularVector<Type>::CircularVector(int vectorSize)
 		maxSize = vectorSize;
 	}
 
-	front = maxSize;
+	head = maxSize;
 
 	rear  = maxSize - 1;
 
@@ -80,20 +81,20 @@ void CircularVector<Type>::resize()
 	Type *copyList = new Type [maxSize * 2];
 	Type *temp = list;
 
-	if(front >= maxSize)
+	if(head >= maxSize)
 	{
-		front = 0;
+		head = 0;
 	}
 
 	for(int i = 0; i < count; i++)
 	{
-		copyList[i] = list[front];
+		copyList[i] = list[head];
 
-		front++;
+		head++;
 
-		if(front >= maxSize)
+		if(head >= maxSize)
 		{
-			front = 0;
+			head = 0;
 		}
 	}
 
@@ -101,7 +102,7 @@ void CircularVector<Type>::resize()
 
 	maxSize *= 2;
 
-	front = maxSize;
+	head = maxSize;
 
 	rear = (maxSize / 2) - 1;
 
@@ -137,13 +138,14 @@ void CircularVector<Type>::push_front(const Type item)
 		resize();
 	}
 
-	front = (front - 1) % maxSize;
+	head = (head - 1) % maxSize;
 
 	count++;
 
-	list[front] = item;
+	list[head] = item;
 }
 
+// FIX THIS...
 template <class Type>
 void CircularVector<Type>::insert(int position, const Type item)
 {
@@ -159,10 +161,12 @@ void CircularVector<Type>::insert(int position, const Type item)
 		resize();
 	}
 
-	// Calls the push_front() method if the position entered is 0 or
-	// push_back() if maxSize - 1 is entered.
+	// Calls the push_front() or push_back methods if the position entered is
+	// at either end of the vector, else inserts the item at specified position.
 	if(position == 0)
 	{
+		cout << "0 was entered calling pushhead()\n";
+
 		push_front(item);
 	}
 	else if(position == maxSize - 1)
@@ -171,26 +175,42 @@ void CircularVector<Type>::insert(int position, const Type item)
 	}
 	else
 	{
-		count++;
-
-		if(full())
+		if(head == maxSize)
 		{
-			resize();
+			head = 0;
+		}
+
+		position += head;
+
+		if(position >= maxSize)
+		{
+			position -= maxSize;
 		}
 
 		int newRear = rear + 1;
 
-		int insertPos = front + position;
-
-		if(insertPos >= maxSize)
+		while(rear >= position)
 		{
-			insertPos -= maxSize;
+			if(rear < 0)
+			{
+				rear = maxSize - 1;
+
+				list[0] = list[rear];
+			}
+			else
+			{
+				list[rear + 1] = list[rear];
+			}
+
+			rear--;
 		}
+
+		list[position] = item;
 
 		rear = newRear;
 
-		cout << "Position entered = " << position << endl
-			 << "Insert position = " << insertPos << endl;
+		// count++ goes inside else because push_front() has its own count++
+		count++;
 	}
 }
 
@@ -199,13 +219,13 @@ void CircularVector<Type>::pop_front()
 {
 	count--;
 
-	if(front == maxSize)
+	if(head == maxSize)
 	{
-		front = 0;
+		head = 0;
 	}
 	else
 	{
-		front = (front + 1) % maxSize;
+		head = (head + 1) % maxSize;
 	}
 }
 
@@ -225,21 +245,99 @@ void CircularVector<Type>::pop_back()
 }
 
 template <class Type>
-Type CircularVector<Type>::getFront()
+void CircularVector<Type>::erase(int position)
 {
-	if(front == maxSize)
+	// Exits the function if the position entered is invalid.
+	if(position < 0 || position >= maxSize)
 	{
-		front = 0;
+		cout << "\nInvalid position!\n\n";
+
+		return;
 	}
 
-	return list[front];
+	// Exits the function if the vector is empty.
+	if(empty())
+	{
+		cout << "\nCannot erase from an empty vector!\n\n";
+
+		return;
+	}
+
+	// Calls pop_front() or pop_back() if attempting to delete from either
+	// end of the vector, else deletes the value in the indicated position.
+	if(position == 0)
+	{
+		pop_front();
+	}
+	else if(position == maxSize - 1)
+	{
+		pop_back();
+	}
+	else
+	{
+		// Sets head to 0 if it is out of bounds.
+		if(head == maxSize)
+		{
+			head = 0;
+		}
+
+		// Adds the value of head to position so that the correct index in the
+		// circular array can be accessed.
+		position += head;
+
+		// Subtracts maxSize from position if position is out of bounds so that
+		// position is reset at the beginning of the array but moves to the
+		// correct index of the circular array.
+		if(position >= maxSize)
+		{
+			position -=maxSize;
+		}
+
+		// Moves all values back by one while position has not reached the end
+		// of the circular array.
+		while(position < rear)
+		{
+			// Handles the wrapping of the circular array by assigning the
+			// value in the 0 index of the array to the maxSize - 1 index of
+			// the array, else continues to move the values back one position.
+			if(position == maxSize - 1)
+			{
+				list[position] = list[0];
+
+				position = 0;
+			}
+			else
+			{
+				list[position] = list[position + 1];
+
+				position++;
+			}
+		}
+
+		// Decrements rear to make the previous rear inaccessible.
+		rear--;
+
+		// Decrements count to represent an item being removed from the vector.
+		count--;
+	}
 }
 
 template <class Type>
-Type CircularVector<Type>::getBack()
+Type CircularVector<Type>::front()
 {
-//	cout << "rear = " << rear << endl;
+	// Assigns head to 0 if it is out of bounds (only push_back() was used when
+	// adding values to the vector).
+	if(head == maxSize)
+	{
+		head = 0;
+	}
 
+	return list[head];
+}
+
+template <class Type>
+Type CircularVector<Type>::back()
+{
 	return list[rear];
 }
 
