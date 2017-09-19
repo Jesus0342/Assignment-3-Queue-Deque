@@ -15,18 +15,61 @@ public:
 	// Destructor.
 	~CircularVector();
 
-	//
+	// Returns true if count == 0, else returns false.
+	// PRE-CONDITION: The vector must exist.
 	bool empty();
+
+	// Returns true if count == maxSize, else returns false.
+	// PRE-CONDITION: Th vector must exist.
 	bool full();
+
+	// Returns the value of count.
+	// PRE-CONDITION: The vector must exist.
 	int size();
+
+	// Adds a new value to the back of the vector.
+	// POST-CONDITION: A new value is added to the vector - rear and count are
+	//				   increased by 1.
 	void push_back(const Type item);
+
+	// Adds a new value to the front of the vector.
+	// POST-CONDITION: A new value is added to the vector - head is decremented
+	// 				   and count is incremented.
 	void push_front(const Type item);
+
+	// Adds a new value to the vector at a specified position.
+	// PRE-CONDITION:  Position is valid (not out of range).
+	// POST-CONDITION: A new value is added to the vector - rear is incremented,
+	// 				   all values are moved 1 index to the right and count is
+	//				   is incremented.
 	void insert(int position, const Type item);
+
+	// Removes the value at the front of the vector.
+	// POST-CONDITION: A value is removed from the vector - head is incremented
+	//				   and count is decremented.
 	void pop_front();
+
+	// Removes the value at the end of the vector.
+	// POST-CONDITION: A value is removed from the vector - rear and count are
+	//				   decremented.
 	void pop_back();
+
+	// Removes the value at the indicated position.
+	// PRE-CONDITION:  Position is valid (not out of range).
+	// POST-CONDITION: A value is removed from the vector - rear is decremented
+	// 				   and all values are moved one index down.
 	void erase(int position);
+
+	// Returns the value stored in the cell whose index is stored in head.
+	// PRE-CONDITION: count > 0
 	Type front();
+
+	// Returns the value stored in the cell whose index is stored in rear.
+	// PRE-CONDITION: count > 0.
 	Type back();
+
+	// Returns the value stored in the cell at the indicated position.
+	// PRE-CONDITION: position is valid (not out of range).
 	Type at(int position);
 
 private:
@@ -272,6 +315,8 @@ void CircularVector<Type>::pop_front()
 {
 	count--;
 
+	// Assigns 0 to head if no push_front() insertions were used, else moves head
+	// to the next index up.
 	if(head == maxSize)
 	{
 		head = 0;
@@ -287,7 +332,8 @@ void CircularVector<Type>::pop_back()
 {
 	count--;
 
-	//
+	// Assigns 0 to rear if no push_back() insertions were used else moves
+	// rear to the next index down.
 	if(rear == 0)
 	{
 		rear = maxSize - 1;
